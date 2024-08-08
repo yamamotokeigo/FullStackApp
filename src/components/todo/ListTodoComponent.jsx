@@ -1,18 +1,20 @@
 import { useEffect, useState } from "react";
-import {deleteTodoById, retrieveTodoForUsername} from "./api/TodoApiService"
+import { useNavigate } from "react-router-dom";
+import {updateTodoById, deleteTodoById, retrieveTodoForUsername} from "./api/TodoApiService"
+import { useAuth } from "./security/AuthContext";
 
 function ListTodoComponent() {
 
     const today = new Date();
-    const targetDate = new Date(today.getFullYear()+12, today.getMonth(), today.getDay());
+
+    const authContext = useAuth()
+    const username = authContext.username
+
+    const navigate = useNavigate()
 
     const [todo, setTodo] = useState([])
     const [message, setMessage] = useState(null)
 
-    // const todo = [
-    //     {id: 1, description: 'Learn AWS', done: false, targetDate: targetDate},
-    //     {id: 2, description: 'Learn React', done: false, targetDate: targetDate}
-    // ]
 
     useEffect(
         () => {refreshTodo()
@@ -20,7 +22,7 @@ function ListTodoComponent() {
     )
 
     function refreshTodo() {
-        retrieveTodoForUsername('user123')
+        retrieveTodoForUsername(username)
         .then(response => {
             console.log(response.data)
             setTodo(response.data)
@@ -31,7 +33,7 @@ function ListTodoComponent() {
 
     function deleteTodo(id) {
         console.log('clicked' + id)
-        deleteTodoById('user123', id)
+        deleteTodoById(username, id)
         .then(
             () => {
                 setMessage(`Deleted ${id}`)
@@ -39,6 +41,15 @@ function ListTodoComponent() {
             }
         )
         .catch(error => console.log(error))
+    }
+
+    function updateTodo(id) {
+        console.log('clicked' + id)
+        navigate(`/todo/${id}`)
+    }
+
+    function addNewTodo() {
+        navigate(`/todo/-1`)
     }
 
     return(
@@ -53,6 +64,7 @@ function ListTodoComponent() {
                             <th>is done</th>
                             <th>target date</th>
                             <th>Delete</th>
+                            <th>Update</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,6 +76,7 @@ function ListTodoComponent() {
                                     <td>{todo.done.toString()}</td>
                                     <td>{todo.targetDate.toString()}</td>
                                     <td> <button className="btn btn-warning" onClick={() => deleteTodo(todo.id)}>Delete</button></td>
+                                    <td> <button className="btn btn-success" onClick={() => updateTodo(todo.id)}>Update</button></td>
                                 </tr>
                                 )
                             )
@@ -72,6 +85,7 @@ function ListTodoComponent() {
                     </tbody>
                 </table>
             </div>
+            <div className="btn btn-success m-5" onClick={addNewTodo}>Add New Todo</div>
         </div>
     )
 }

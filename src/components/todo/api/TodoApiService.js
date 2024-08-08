@@ -26,3 +26,35 @@ export function deleteTodoById(username, id){
         }
     })
 }
+
+export function retrieveTodoById(username, id){
+    return apiClient({
+        url: `/users/${username}/todo/${id}`,
+        method: 'GET', // or 'POST' if it's a POST request
+        headers: {
+            'Origin': 'http://localhost:3000'
+        }
+    })
+}
+
+export function updateTodo(username, id, todo){
+    return apiClient({
+        url: `/users/${username}/todo/${id}`,
+        method: 'PUT', // or 'POST' if it's a POST request
+        data: todo,
+        headers: {
+            'Origin': 'http://localhost:3000'
+        }
+    })
+}
+
+export function createTodo(username, todo){
+    return apiClient({
+        url: `/users/${username}/todo`,
+        method: 'POST', // or 'POST' if it's a POST request
+        data: todo,
+        headers: {
+            'Origin': 'http://localhost:3000'
+        }
+    })
+}
