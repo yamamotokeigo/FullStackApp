@@ -1,7 +1,7 @@
 import {Link, useParams} from 'react-router-dom'
 import axios from 'axios'
 import { useState } from 'react'
-import { retrieveHelloWorldBean } from './api/HelloWorldApiService'
+import { retrieveHelloWorldBean, retrieveHelloWorldPathVariable } from './api/HelloWorldApiService'
 
 function WelcomeComponent() {
 
@@ -11,18 +11,13 @@ function WelcomeComponent() {
 
     function callHelloWorldRestApi(){
         console.log('called')
-        // axios({
-        //     url: 'http://localhost:8080/hello-world',
-        //     method: 'GET', // or 'POST' if it's a POST request
-        //     headers: {
-        //         'Origin': 'http://localhost:3000'
-        //     },
-        //     withCredentials: true
-        // })
-        //     .then((response) => successfulResponse(response))
-        //     .catch((error) => errorResponse(error))
-        //     .finally(() => console.log('cleanup'))
+
         retrieveHelloWorldBean()
+            .then((response) => successfulResponse(response))
+            .catch((error) => errorResponse(error))
+            .finally(() => console.log('cleanup'))
+
+        retrieveHelloWorldPathVariable('yamamoto')
             .then((response) => successfulResponse(response))
             .catch((error) => errorResponse(error))
             .finally(() => console.log('cleanup'))

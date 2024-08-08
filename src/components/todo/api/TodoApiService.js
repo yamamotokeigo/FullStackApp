@@ -7,9 +7,9 @@ const apiClient = axios.create(
     withCredentials: true
     });
 
-export function retrieveHelloWorldBean(){
+export function retrieveTodoForUsername(username){
     return apiClient({
-        url: '/hello-world-bean',
+        url: `/users/${username}/todo`,
         method: 'GET', // or 'POST' if it's a POST request
         headers: {
             'Origin': 'http://localhost:3000'
@@ -17,10 +17,10 @@ export function retrieveHelloWorldBean(){
     })
 }
 
-export function retrieveHelloWorldPathVariable(username){
+export function deleteTodoById(username, id){
     return apiClient({
-        url: `/hello-world/path-variable/${username}`,
-        method: 'GET', // or 'POST' if it's a POST request
+        url: `/users/${username}/todo/${id}`,
+        method: 'DELETE', // or 'POST' if it's a POST request
         headers: {
             'Origin': 'http://localhost:3000'
         }
